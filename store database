@@ -1,0 +1,73 @@
+# DDL - Create
+create database store ;
+
+# DDL - Create
+create table countries(
+    code int primary key ,
+    name varchar(20) unique ,
+    continent_name varchar(20) not null
+);
+
+# DDL - Create
+create table users(
+    id int primary key ,
+    full_name varchar(20) ,
+    email varchar(20) unique ,
+    gender char(1) check(gender='m' or gender='f'),
+    date_of_birth varchar(20) ,
+    created_at datetime ,
+    country_code int ,
+    foreign key (country_code) references countries(code)  # foreign key
+);
+
+# DDL - Create
+create table orders(
+    id int primary key ,
+    user_id int ,
+    status varchar(6) check(status='start' or status='finish'),
+    created_at datetime ,
+    foreign key (user_id) references users(id)
+);
+
+# DDL - Create
+create table order_products(
+    order_id int  ,
+    product_id int  ,
+    quantity int default 0 ,
+    foreign key (order_id) references orders(id) ,
+    foreign key (product_id) references products(id),
+    primary key(order_id,product_id)
+);
+
+# DDL - Create
+create table products(
+    id int primary key ,
+    name varchar(20) not null ,
+    price int default 0,
+    status varchar(10) check(status='valid' or status='expired'),
+    created_at datetime #TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+# DML - Insert users
+
+insert into countries values (35,'Ahmed','KSA');
+insert into users values (2,'Fahad','b@b.com','m','2010-10-10','2022-04-17 13:55:28',35);
+insert into orders  values (2,1,'start','2022-04-17 13:55:28');
+insert into products  values (2,'UAE',5,'valid','2022-04-17 13:55:28');
+insert into order_products  values (2,1,55);
+
+
+
+# DML - Update
+update countries  set name='Ali' where code='25';
+
+
+# DML - Delete
+delete from products where id=2;
+# We can not delete products because it has a foreign key
+
+
+# for test and change
+
+#select * from users;
+#drop database store;
